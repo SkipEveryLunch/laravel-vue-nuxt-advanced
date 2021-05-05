@@ -14,7 +14,12 @@ use App\Http\Controllers\AuthController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::prefix("admin")->group(function(){
-    Route::post("register",[AuthController::class,"register"]);
+Route::prefix('admin')->group(function(){
+    Route::post('register',[AuthController::class,'register']);
+    Route::post('login',[AuthController::class,'login']);
+    Route::middleware(['auth:sanctum','scope.admin'])->group(function(){
+        Route::get('user',[AuthController::class,'user']);
+        Route::delete('logout',[AuthController::class,'logout']);
+    });
 });
 
