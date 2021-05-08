@@ -3,19 +3,19 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
-class DatabaseSeeder extends Seeder
+class AmbassadorSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        $this->call([
-        AmbassadorSeeder::class,
-        ProductSeeder::class
+        User::factory(30)->create([
+            'is_admin'=>1
         ]);
     }
 }

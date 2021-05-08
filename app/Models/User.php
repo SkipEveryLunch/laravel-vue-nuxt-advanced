@@ -15,4 +15,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+    public function scopeAmbassadors($query){
+        $query->where('is_admin',0);
+    }
+    public function scopeAdmins($query){
+        $query->where('is_admin',1);
+    }
 }
