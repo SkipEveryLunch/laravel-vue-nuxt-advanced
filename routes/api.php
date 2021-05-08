@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\LinkController;
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,6 +27,7 @@ Route::prefix('admin')->group(function(){
         Route::resource('ambassadors', AmbassadorController::class);
         Route::resource('products', ProductController::class);
         Route::get('users/{id}/links',[LinkController::class,'index']);
+        Route::get('orders',[OrderController::class,'index']);
     });
 });
 

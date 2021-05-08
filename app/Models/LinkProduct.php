@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class LinkProduct extends Model
 {
     use HasFactory;
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function links(){
+        return $this->belongsToMany(Link::class,"link_products");
     }
     public function products(){
         return $this->belongsToMany(Product::class,"link_products");
