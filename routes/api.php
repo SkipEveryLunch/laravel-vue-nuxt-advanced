@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\AmbassadorController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,9 +17,12 @@ use App\Http\Controllers\AuthController;
 Route::prefix('admin')->group(function(){
     Route::post('register',[AuthController::class,'register']);
     Route::post('login',[AuthController::class,'login']);
-    Route::middleware(['auth:sanctum','scope.admin'])->group(function(){
+    Route::middleware(['scope.admin','auth:sanctum'])->group(function(){
         Route::get('user',[AuthController::class,'user']);
         Route::delete('logout',[AuthController::class,'logout']);
+        Route::put('updateInfo',[AuthController::class,'updateInfo']);
+        Route::put('updatePassword',[AuthController::class,'updatePassword']);
+        Route::resource('ambassadors', AmbassadorController::class);
     });
 });
 
