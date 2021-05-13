@@ -16,7 +16,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $req){
         $user = User::create($req->only('first_name','last_name','email')+[
             'password'=>Hash::make($req->input('password')),
-            "is_admin"=>1
+            "is_admin"=>$req->path()==='api/admin/register'?1:0
         ]);
         return response($user,Response::HTTP_CREATED);
     }
@@ -27,7 +27,14 @@ class AuthController extends Controller
             ],Response::HTTP_UNAUTHORIZED);
         };
         $user = Auth::user();
-        $jwt = $user->createToken('token',['admin'])->plainTextToken;
+        $isAdminRoute = $req->path()==='api/admin/login';
+        if($isAdminRoute && !$user->is_admin){
+            return response([
+                'error'=>'unauthenticated'
+            ],Response::HTTP_UNAUTHORIZED);
+        }
+        $scope = $isAdminRoute ? 'admin' : 'ambassador';
+        $jwt = $user->createToken('token',[$scope])->plainTextToken;
         $cookie = cookie("jwt",$jwt,60 * 24);
         return response([
             "message"=>"success"
