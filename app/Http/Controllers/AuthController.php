@@ -10,6 +10,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {
@@ -41,7 +42,8 @@ class AuthController extends Controller
         ])->withCookie($cookie);
     }
     public function user(Request $req){
-        return $req->user();
+        $user = $req->user();
+        return new UserResource($user);
     }
     public function logout(){
         $cookie = \Cookie::forget("jwt");

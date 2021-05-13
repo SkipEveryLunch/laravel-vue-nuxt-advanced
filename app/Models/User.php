@@ -21,4 +21,19 @@ class User extends Authenticatable
     public function scopeAdmins($query){
         $query->where('is_admin',1);
     }
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
+    public function getAdminRevenueAttribute(){
+        return $this->orders()->sum(
+            function(Order $order){
+            return $order->admin_revenue;
+        });
+    }
+    public function getRevenueAttribute(){
+        return $this->orders->sum(
+            function(Order $order){
+            return $order->ambassador_revenue;
+        });
+    }
 }
