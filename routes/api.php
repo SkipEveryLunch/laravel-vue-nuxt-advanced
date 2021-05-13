@@ -31,3 +31,13 @@ Route::prefix('admin')->group(function(){
     });
 });
 
+Route::prefix('ambassador')->group(function(){
+    Route::post('register',[AuthController::class,'register']);
+    Route::post('login',[AuthController::class,'login']);
+    Route::middleware(['scope.ambassador','auth:sanctum'])->group(function(){
+        Route::get('user',[AuthController::class,'user']);
+        Route::delete('logout',[AuthController::class,'logout']);
+        Route::put('updateInfo',[AuthController::class,'updateInfo']);
+        Route::put('updatePassword',[AuthController::class,'updatePassword']);
+    });
+});
