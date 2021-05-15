@@ -13,10 +13,6 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return Product::all();
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -66,9 +62,21 @@ class ProductController extends Controller
         return response(null,Response::HTTP_NO_CONTENT);
     }
     public function frontend(){
-        return Product::paginate();
+
+        return \Cache::remember('products_frontend',30*60,fn()=>Product::all());
     }
-    public function backend(){
-        return Product::all();
+    public function backend(Request $req){
+        $page = $req->input('page',1);
+        $perPage = 9;
+        $products = \Cache::remember('products_backend',30*60,fn()=> Product::all());
+        $total = $products->count();
+        return [
+            'meta'=>[
+                'page'=>$page,
+                'total'=>$total,
+                'last_page'=>ceil($total/$perPage)
+            ],
+            'data'=>$products->forPage($page,$perPage)->values()
+        ];
     }
 }
