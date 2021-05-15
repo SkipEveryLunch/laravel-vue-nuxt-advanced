@@ -20,4 +20,9 @@ class Order extends Model
             return $item->admin_revenue;
         });
     }
+    public function getRevenueAttribute(){
+        return $this->orderItems->sum(function(OrderItem $item){
+            return $item->revenue;
+        });
+    }
 }

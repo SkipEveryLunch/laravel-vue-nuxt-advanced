@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\StatsController;
+use App\Http\Controllers\AmbassadorController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,4 +43,8 @@ Route::prefix('ambassador')->group(function(){
     common('scope.ambassador');
     Route::get('products/frontend',[ProductController::class,'frontend']);
     Route::get('products/backend',[ProductController::class,'backend']);
+    Route::middleware(['scope.admin','auth:sanctum'])->group(function(){
+        Route::get('stats',[StatsController::class,'index']);
+        Route::get('ranking',[StatsController::class,'ranking']);
+    });
 });

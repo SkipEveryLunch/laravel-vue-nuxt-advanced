@@ -27,6 +27,7 @@ class UserFactory extends Factory
             'last_name' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => \Hash::make(111111), // password,
+            'is_admin' => random_int(0,1)
         ];
     }
 
