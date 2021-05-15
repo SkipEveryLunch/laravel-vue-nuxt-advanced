@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Symfony\Component\HttpFoundation\Response;
+use App\Events\ProductUpdatedEvent;
 
 class ProductController extends Controller
 {
@@ -23,6 +24,7 @@ class ProductController extends Controller
     public function store(Request $req)
     {
         $product = Product::create($req->only("title","description","image","price"));
+        event(new ProductUpdatedEvent);
         return response($product,Response::HTTP_CREATED);
     }
 
@@ -47,6 +49,7 @@ class ProductController extends Controller
     public function update(Request $req, Product $product)
     {
         $product->update($req->only('title','description','image','price'));
+        event(new ProductUpdatedEvent);
         return response($product,Response::HTTP_ACCEPTED);
     }
 
@@ -59,6 +62,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Product::destroy($id);
+        event(new ProductUpdatedEvent);
         return response(null,Response::HTTP_NO_CONTENT);
     }
     public function frontend(){
