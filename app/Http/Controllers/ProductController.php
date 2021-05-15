@@ -66,10 +66,29 @@ class ProductController extends Controller
         return \Cache::remember('products_frontend',30*60,fn()=>Product::all());
     }
     public function backend(Request $req){
-        $page = $req->input('page',1);
-        $perPage = 9;
         $products = \Cache::remember('products_backend',30*60,fn()=> Product::all());
+
+        if($s = $req->input('s')){
+            $products = $products->
+                filter(function(Product $product)use($s){
+                return \Str::contains($product->title,$s)||\Str::contains($product->description,$s);
+            });
+        }
+        if($sort = $req->input('sort')){
+            if($sort==='asc'){
+                $products = $products->sortBy([
+                    fn($a,$b)=>$a['price']<=>$b['price']
+                ]);
+            }elseif($sort==='desc'){
+                $products = $products->sortBy([
+                    fn($a,$b)=>$b['price']<=>$a['price']
+                ]);
+            }
+
+        }
+        $page = $req->input('page',1);
         $total = $products->count();
+        $perPage = 9;
         return [
             'meta'=>[
                 'page'=>$page,
