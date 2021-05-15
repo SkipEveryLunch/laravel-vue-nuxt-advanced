@@ -65,4 +65,10 @@ class ProductController extends Controller
         Product::destroy($id);
         return response(null,Response::HTTP_NO_CONTENT);
     }
+    public function frontend(){
+        return Product::paginate();
+    }
+    public function backend(){
+        return Product::all();
+    }
 }

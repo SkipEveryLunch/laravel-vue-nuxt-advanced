@@ -31,7 +31,7 @@ Route::prefix('admin')->group(function(){
     common('scope.admin');
     Route::middleware(['scope.admin','auth:sanctum'])->group(function(){
         Route::resource('ambassadors', AmbassadorController::class);
-        Route::resource('products', ProductController::class);
+        Route::resource('products', ProductController::class,['except'=>['index']]);
         Route::get('users/{id}/links',[LinkController::class,'index']);
         Route::get('orders',[OrderController::class,'index']);
     });
@@ -39,4 +39,6 @@ Route::prefix('admin')->group(function(){
 
 Route::prefix('ambassador')->group(function(){
     common('scope.ambassador');
+    Route::get('products/frontend',[ProductController::class,'frontend']);
+    Route::get('products/backend',[ProductController::class,'backend']);
 });
