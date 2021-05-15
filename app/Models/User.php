@@ -22,7 +22,7 @@ class User extends Authenticatable
         $query->where('is_admin',1);
     }
     public function orders(){
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class)->where('complete',1);
     }
     public function getAdminRevenueAttribute(){
         return $this->orders()->sum(

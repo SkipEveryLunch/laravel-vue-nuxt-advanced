@@ -22,7 +22,7 @@ class Order extends Model
     }
     public function getRevenueAttribute(){
         return $this->orderItems->sum(function(OrderItem $item){
-            return $item->revenue;
+            return $item->ambassador_revenue;
         });
     }
 }

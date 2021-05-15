@@ -21,7 +21,7 @@ class CreateOrderItemsTable extends Migration
             $table->decimal('price');
             $table->unsignedBigInteger('quantity');
             $table->decimal('admin_revenue');
-            $table->decimal('revenue');
+            $table->decimal('ambassador_revenue');
             $table->timestamps();
         });
     }
