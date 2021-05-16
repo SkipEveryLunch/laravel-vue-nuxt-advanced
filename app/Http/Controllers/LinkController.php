@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Link;
+use App\Models\LinkProduct;
 use Illuminate\Http\Request;
+use App\Http\Resources\LinkResource;
 
 class LinkController extends Controller
 {
@@ -14,7 +16,8 @@ class LinkController extends Controller
      */
     public function index($id)
     {
-        return Link::where('user_id',$id)->get();
+        $links = Link::with('orders')->where('user_id',$id)->get();
+        return LinkResource::collection($links);
     }
 
     /**
@@ -22,10 +25,6 @@ class LinkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -33,9 +32,19 @@ class LinkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        $link = Link::create([
+            'user_id'=>$req->user()->id,
+            'code'=>\Str::random(6)
+        ]);
+        foreach($req->input('products') as $product_id){
+            LinkProduct::create([
+                'link_id' => $link->id,
+                'product_id' => $product_id
+            ]);
+        }
+        return $link;
     }
 
     /**
@@ -44,9 +53,9 @@ class LinkController extends Controller
      * @param  \App\Models\Link  $link
      * @return \Illuminate\Http\Response
      */
-    public function show(Link $link)
+    public function show($code)
     {
-        //
+        return Link::with('user','products')->where('code',$code)->first();
     }
 
     /**

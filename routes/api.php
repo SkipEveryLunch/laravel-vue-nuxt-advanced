@@ -43,8 +43,14 @@ Route::prefix('ambassador')->group(function(){
     common('scope.ambassador');
     Route::get('products/frontend',[ProductController::class,'frontend']);
     Route::get('products/backend',[ProductController::class,'backend']);
-    Route::middleware(['scope.admin','auth:sanctum'])->group(function(){
+    Route::middleware(['scope.ambassador','auth:sanctum'])->group(function(){
         Route::get('stats',[StatsController::class,'index']);
         Route::get('ranking',[StatsController::class,'ranking']);
+        Route::post('links',[LinkController::class,'store']);
     });
+});
+
+Route::prefix('checkout')->group(function(){
+    Route::get('links/{code}',[LinkController::class,'show']);
+    Route::post('orders',[OrderController::class,'store']);
 });
