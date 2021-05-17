@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Link;
 use App\Models\Product;
 use App\Http\Resources\OrderResource;
+use App\Events\OrderCompletedEvent;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -111,6 +112,9 @@ class OrderController extends Controller
         }
         $order->complete = 1;
         $order->save();
+
+        event(new OrderCompletedEvent($order));
+
         return response([
             'message' => 'success'
         ]);

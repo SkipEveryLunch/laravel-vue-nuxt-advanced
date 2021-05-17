@@ -8,6 +8,9 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\ProductUpdatedEvent;
 use App\Listeners\ProductUpdatedListener;
+use App\Events\OrderCompletedEvent;
+use App\Listeners\NotifyAdminListener;
+use App\Listeners\NotifyAmbassadorListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -22,6 +25,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         ProductUpdatedEvent::class=>[
             ProductUpdatedListener::class
+        ],
+        OrderCompletedEvent::class=>[
+            NotifyAdminListener::class,
+            NotifyAmbassadorListener::class
         ]
     ];
 
