@@ -36,6 +36,7 @@ Route::prefix('admin')->group(function(){
         Route::resource('products', ProductController::class,['except'=>['index']]);
         Route::get('users/{id}/links',[LinkController::class,'index']);
         Route::get('orders',[OrderController::class,'index']);
+        Route::apiResource('products', ProductController::class);
     });
 });
 

@@ -17,8 +17,8 @@ class CreateLinkProductsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('link_id');
             $table->foreign('link_id')->references('id')->on('links');
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->unsignedBigInteger('product_id')->nullable();;
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
             $table->timestamps();
         });
     }

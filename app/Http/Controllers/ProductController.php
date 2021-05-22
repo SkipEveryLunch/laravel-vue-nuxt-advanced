@@ -21,6 +21,9 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function index(){
+        return Product::all();
+    }
     public function store(Request $req)
     {
         $product = Product::create($req->only("title","description","image","price"));
